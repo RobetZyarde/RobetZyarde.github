@@ -104,7 +104,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ARM-学习/" style="font-size: 10px;">ARM 学习</a><a href="/tags/文摘/" style="font-size: 10px;">文摘</a><a href="/tags/随笔/" style="font-size: 20px;">随笔</a><a href="/tags/音乐/" style="font-size: 10px;">音乐</a>
+						<a href="/tags/ARM-学习/" style="font-size: 15px;">ARM 学习</a><a href="/tags/文摘/" style="font-size: 10px;">文摘</a><a href="/tags/随笔/" style="font-size: 20px;">随笔</a><a href="/tags/音乐/" style="font-size: 10px;">音乐</a>
 					</div>
 				</section>
 				
@@ -165,6 +165,99 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-arm单片机起步（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/18/arm单片机起步（二）/" class="article-date">
+  	<time datetime="2015-07-18T11:04:13.000Z" itemprop="datePublished">2015-07-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/18/arm单片机起步（二）/">arm单片机起步（二）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="时钟与定时器">时钟与定时器</h1><p>ARM的时钟与其相关的总线比C51复杂了很多。</p>
+<p>在使用库函数的时候，有专门的函数用来初始化。</p>
+<p>通过使用相应的函数，可以减少对其相关寄存器的详细了解。</p>
+<p><img src="http://7xivoo.com1.z0.glb.clouddn.com/QQ截图20150809173604.png" alt=""></p>
+<p>从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。</p>
+<h2 id="系统时钟的初始化">系统时钟的初始化</h2><p>在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。</p>
+<p>一般情况下是不用修改推荐的定义值的。</p>
+<p>文件开头就有一个这样的定义:</p>
+<pre><code><span class="comment">//#define SYSCLK_FREQ_HSE    HSE_Value</span>
+<span class="comment">//#define SYSCLK_FREQ_20MHz 20000000</span>
+<span class="comment">//#define SYSCLK_FREQ_36MHz 36000000</span>
+<span class="comment">//#define SYSCLK_FREQ_48MHz 48000000</span>
+<span class="comment">//#define SYSCLK_FREQ_56MHz 56000000</span>
+  <span class="hexcolor">#def</span>ine SYSCLK_FREQ_72MHz <span class="number">72000000</span>
+</code></pre><p>通过 #define 和 #elif defined 的组合使用，让用户从软件上自由选择系统时钟，</p>
+<p>而厂家提供推荐的各个总线下的时钟分频频率（见c文件中相关定义）</p>
+<h2 id="定时器时钟的初始化">定时器时钟的初始化</h2><p>以定时器举例<br>        TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;<br>        NVIC_InitTypeDef NVIC_InitStructure;</p>
+<pre><code><span class="constant">RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE); //时钟使能
+
+//定时器TIM3初始化
+TIM_TimeBaseStructure.TIM_Period</span> = <span class="number">1000</span>-<span class="number">1</span>; <span class="comment">//设置在下一个更新事件装入活动的自动重装载寄存器周期的值</span>
+<span class="constant">TIM_TimeBaseStructure.TIM_Prescaler</span> = <span class="number">72</span>-<span class="number">1</span>; <span class="comment">//设置用来作为TIMx时钟频率除数的预分频值</span>
+<span class="constant">TIM_TimeBaseStructure.TIM_ClockDivision</span> = <span class="number">0</span>;
+<span class="constant">TIM_TimeBaseStructure.TIM_CounterMode</span> = TIM_CounterMode_Up;  <span class="comment">//TIM向上计数模式</span>
+<span class="constant">TIM_TimeBaseInit(TIM4, &amp;TIM_TimeBaseStructure); //根据指定的参数初始化TIMx的时间基数单位
+
+TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE ); //使能指定的TIM3中断,允许更新中断
+
+//中断优先级NVIC设置
+NVIC_InitStructure.NVIC_IRQChannel</span> = TIM4_IRQn;  <span class="comment">//TIM3中断</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority</span> = <span class="number">2</span>;  <span class="comment">//先占优先级0级</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelSubPriority</span> = <span class="number">3</span>;  <span class="comment">//从优先级3级</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelCmd</span> = ENABLE; <span class="comment">//IRQ通道被使能</span>
+<span class="constant">NVIC_Init(&amp;NVIC_InitStructure);  //初始化NVIC寄存器
+
+TIM_Cmd(TIM4, ENABLE);  //使能TIMx</span>
+</code></pre><p>此设置的目的为提供一个周期为1ms的中断。</p>
+<p>由上面的设置我们不难看出APB1总线的频率为72M。</p>
+<p>这里我设置的分频数为72，则计数器的频率为1M。</p>
+<p>Period本质上是设置的比较器的值，设置位1000后，1M/1000 = 1000Hz</p>
+<p>得到了1ms的周期。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ARM-学习/">ARM 学习</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
   
     <article id="post-当邋遢家伙的耳机真实受罪" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -790,70 +883,6 @@
 <p>根本就没有什么可以务实的地方，</p>
 <p>不就是瞎想吗？</p>
 <p>谁都会，多你一个不多。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-一阵子-md" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/04/06/一阵子-md/" class="article-date">
-  	<time datetime="2015-04-06T09:48:44.000Z" itemprop="datePublished">2015-04-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/06/一阵子-md/">一阵子</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大概是前几周，生了个病，只持续了2天，立马痊愈了。但是立马觉得整个人都不好了，什么事都不想做，什么人都看不顺眼，什么话都觉得冲。背上长了许多疮，痛痒难忍。</p>
-<p>无意间发现电脑里停着这样一个资料<br>    [怎样停止忧虑，开始生活和控制时间和生活两部].How.to.Stop.Worrying.and.Start.Living,.Dale.Carnegie.pdf<br>无疑这部全英文的“鸡汤大师”卡耐基的著作我眼下是无心去阅读的，</p>
-<p>不过我当前的状态可能和描述的第一句有关 ———— 怎样停止忧虑</p>
-<p>可能我前十几年的人生总与考试有关，这个忧虑可以归罪于对于自己考试成绩的不自信，对于自己身体条件的不自信，这些都可以归罪于自身的懒惰，自身的意志薄弱。但着重观察之后，我并未能为这些缺点付出努力。</p>
-<p>有时候表现为，不知不觉我就又考好了。有时候表现的更为简单，老子高考完了，还考了个七年制的专业，老子再关心成绩能干啥用？</p>
-<p>是有用啊，可以申请奖学金。但这种东西我不喜欢，还要和别人争，我就习惯于“让”给别人，为了证明我是让的，我还是会努力学习，免得自己过意不去。搞了半天，奖学金也没弄到，也浪费了好多精力去学习没啥大价值的东西。这就是我当下忧虑的学习。</p>
-<p>当然啦，这样的事情在我意料之中，我是如此争强好胜之人，也意味着，这样的事情给我带来了许多乐趣，我并不会因为一点点钱和别人争什么，只要”我比较强”，其他琐碎的东西，我都不想去争取，认为不值得。</p>
-<p>那我认为值得的是什么呢? 对于我自己来说，这个答案是很显然的。也是当今人们最重视的东西。有什么能高于钱的，不过就是那么个东西。却让我整日忧虑不安。就像好多年前，有人介绍朋友给我，可来的那人獐头鼠目，让我心生厌恶。我有喜爱的人，给予一些钱财，精力和帮助都是乐意的，也意味着我有厌恶的人，在那些人前偏袒我喜爱的朋友，鄙视他们，也让我觉得心生愉悦，而不这么做，让我觉得心生烦躁，愤怒，尴尬。我是明事理的人，这么做势必会遭到厌恶的人厌恶，更极有可能收不到喜爱的人喜爱，最终自己还是活得不愉快，活得不自在。</p>
-<pre><code>那我是不是该这样，反正都不会共事，这些人与我实力也有一定差距，我没有<span class="string">"必要"</span>过分依赖于他们的任何东西。我要与我喜爱的，我厌恶的人保持距离，除非他们先行动，否则我保持中立与冷漠。
-</code></pre><p>这样的后法派的做法，都会让我觉得好不舒服。</p>
-<p>也许忧虑就是我本身的一种特质。让我来明白，不忧虑的时候有多快乐。去更加体会生活中的好，也说不定啊。</p>
-<p>每当在游戏，或者放假这种时候，我就不太考虑这些问题。不太在乎自己对其他人或者其他人对自己的看法。因为不必天天见。也许平时也该视而不见，无论是好，还是坏，都当做平常吧。就可以少掉太多忧虑。</p>
 
       
     </div>

@@ -3,29 +3,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>arm单片机起步 | 卢卡蒂心的城堡</title>
+  <title>arm单片机起步（二） | 卢卡蒂心的城堡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简单的学完c8051的内容之后，继续进行arm的学习。
-无论是arm还是c51，作为一种MCU，无非是作为一个工程中的控制器。
-官方的说法是这样的
-ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于使用的处理器，这些处理器旨在帮助开发人员满足将来的嵌入式应用的需要。这些需要包括以更低的成本提供更多功能、不断增加连接、改善代码重用和提高能效。
-对于单片机的功能，我做出这样的分类">
+  <meta name="description" content="时钟与定时器ARM的时钟与其相关的总线比C51复杂了很多。
+在使用库函数的时候，有专门的函数用来初始化。
+通过使用相应的函数，可以减少对其相关寄存器的详细了解。
+
+从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。
+系统时钟的初始化在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。
+一般情况下是不用修改推荐的定义值的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="arm单片机起步">
-<meta property="og:url" content="http://yoursite.com/2015/05/08/arm单片机起步/index.html">
+<meta property="og:title" content="arm单片机起步（二）">
+<meta property="og:url" content="http://yoursite.com/2015/07/18/arm单片机起步（二）/index.html">
 <meta property="og:site_name" content="卢卡蒂心的城堡">
-<meta property="og:description" content="简单的学完c8051的内容之后，继续进行arm的学习。
-无论是arm还是c51，作为一种MCU，无非是作为一个工程中的控制器。
-官方的说法是这样的
-ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于使用的处理器，这些处理器旨在帮助开发人员满足将来的嵌入式应用的需要。这些需要包括以更低的成本提供更多功能、不断增加连接、改善代码重用和提高能效。
-对于单片机的功能，我做出这样的分类">
+<meta property="og:description" content="时钟与定时器ARM的时钟与其相关的总线比C51复杂了很多。
+在使用库函数的时候，有专门的函数用来初始化。
+通过使用相应的函数，可以减少对其相关寄存器的详细了解。
+
+从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。
+系统时钟的初始化在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。
+一般情况下是不用修改推荐的定义值的。">
+<meta property="og:image" content="http://7xivoo.com1.z0.glb.clouddn.com/QQ截图20150809173604.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="arm单片机起步">
-<meta name="twitter:description" content="简单的学完c8051的内容之后，继续进行arm的学习。
-无论是arm还是c51，作为一种MCU，无非是作为一个工程中的控制器。
-官方的说法是这样的
-ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于使用的处理器，这些处理器旨在帮助开发人员满足将来的嵌入式应用的需要。这些需要包括以更低的成本提供更多功能、不断增加连接、改善代码重用和提高能效。
-对于单片机的功能，我做出这样的分类">
+<meta name="twitter:title" content="arm单片机起步（二）">
+<meta name="twitter:description" content="时钟与定时器ARM的时钟与其相关的总线比C51复杂了很多。
+在使用库函数的时候，有专门的函数用来初始化。
+通过使用相应的函数，可以减少对其相关寄存器的详细了解。
+
+从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。
+系统时钟的初始化在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。
+一般情况下是不用修改推荐的定义值的。">
   
     <link rel="alternative" href="/atom.xml" title="卢卡蒂心的城堡" type="application/atom+xml">
   
@@ -176,11 +183,11 @@ ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于�
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-arm单片机起步" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-arm单片机起步（二）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/05/08/arm单片机起步/" class="article-date">
-  	<time datetime="2015-05-08T08:41:38.000Z" itemprop="datePublished">2015-05-08</time>
+      <a href="/2015/07/18/arm单片机起步（二）/" class="article-date">
+  	<time datetime="2015-07-18T11:04:13.000Z" itemprop="datePublished">2015-07-18</time>
 </a>
     </div>
   
@@ -193,7 +200,7 @@ ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于�
         
   
     <h1 class="article-title" itemprop="name">
-      arm单片机起步
+      arm单片机起步（二）
     </h1>
   
 
@@ -213,22 +220,47 @@ ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于�
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>简单的学完c8051的内容之后，继续进行arm的学习。</p>
-<p>无论是arm还是c51，作为一种MCU，无非是作为一个工程中的控制器。</p>
-<p>官方的说法是这样的</p>
-<pre><code><span class="title">ARM</span> Cortex™-M处理器系列是一系列可向上兼容的高能效、易于使用的处理器，这些处理器旨在帮助开发人员满足将来的嵌入式应用的需要。这些需要包括以更低的成本提供更多功能、不断增加连接、改善代码重用和提高能效。
-</code></pre><p>对于单片机的功能，我做出这样的分类</p>
-<ul>
-<li>核心功能 - 每个单片机必然会使用的功能</li>
-<li>外围功能 - 单片机常用的功能</li>
-<li>如何作为系统的一个部分</li>
-</ul>
-<p>核心功能是指 时钟、运算和I/O</p>
-<p>作为核心功能要对这些功能初始化。在我用使用的arm上，使用的是库函数（一种集成化的，高效的代码复用）</p>
-<p>对单片机进行初始化</p>
-<p>外围功能是指AD,通信,显示,PWM等等</p>
-<p>单片机的本身功能，其实只有<b>I/O</b>，具体功能或是通过电路，或是通过编程。</p>
-<p>所以下一步我会先尝试摸清ARM的时钟与运算的一些基础编程。</p>
+        <h1 id="时钟与定时器">时钟与定时器</h1><p>ARM的时钟与其相关的总线比C51复杂了很多。</p>
+<p>在使用库函数的时候，有专门的函数用来初始化。</p>
+<p>通过使用相应的函数，可以减少对其相关寄存器的详细了解。</p>
+<p><img src="http://7xivoo.com1.z0.glb.clouddn.com/QQ截图20150809173604.png" alt=""></p>
+<p>从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。</p>
+<h2 id="系统时钟的初始化">系统时钟的初始化</h2><p>在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。</p>
+<p>一般情况下是不用修改推荐的定义值的。</p>
+<p>文件开头就有一个这样的定义:</p>
+<pre><code><span class="comment">//#define SYSCLK_FREQ_HSE    HSE_Value</span>
+<span class="comment">//#define SYSCLK_FREQ_20MHz 20000000</span>
+<span class="comment">//#define SYSCLK_FREQ_36MHz 36000000</span>
+<span class="comment">//#define SYSCLK_FREQ_48MHz 48000000</span>
+<span class="comment">//#define SYSCLK_FREQ_56MHz 56000000</span>
+  <span class="hexcolor">#def</span>ine SYSCLK_FREQ_72MHz <span class="number">72000000</span>
+</code></pre><p>通过 #define 和 #elif defined 的组合使用，让用户从软件上自由选择系统时钟，</p>
+<p>而厂家提供推荐的各个总线下的时钟分频频率（见c文件中相关定义）</p>
+<h2 id="定时器时钟的初始化">定时器时钟的初始化</h2><p>以定时器举例<br>        TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;<br>        NVIC_InitTypeDef NVIC_InitStructure;</p>
+<pre><code><span class="constant">RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE); //时钟使能
+
+//定时器TIM3初始化
+TIM_TimeBaseStructure.TIM_Period</span> = <span class="number">1000</span>-<span class="number">1</span>; <span class="comment">//设置在下一个更新事件装入活动的自动重装载寄存器周期的值</span>
+<span class="constant">TIM_TimeBaseStructure.TIM_Prescaler</span> = <span class="number">72</span>-<span class="number">1</span>; <span class="comment">//设置用来作为TIMx时钟频率除数的预分频值</span>
+<span class="constant">TIM_TimeBaseStructure.TIM_ClockDivision</span> = <span class="number">0</span>;
+<span class="constant">TIM_TimeBaseStructure.TIM_CounterMode</span> = TIM_CounterMode_Up;  <span class="comment">//TIM向上计数模式</span>
+<span class="constant">TIM_TimeBaseInit(TIM4, &amp;TIM_TimeBaseStructure); //根据指定的参数初始化TIMx的时间基数单位
+
+TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE ); //使能指定的TIM3中断,允许更新中断
+
+//中断优先级NVIC设置
+NVIC_InitStructure.NVIC_IRQChannel</span> = TIM4_IRQn;  <span class="comment">//TIM3中断</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority</span> = <span class="number">2</span>;  <span class="comment">//先占优先级0级</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelSubPriority</span> = <span class="number">3</span>;  <span class="comment">//从优先级3级</span>
+<span class="constant">NVIC_InitStructure.NVIC_IRQChannelCmd</span> = ENABLE; <span class="comment">//IRQ通道被使能</span>
+<span class="constant">NVIC_Init(&amp;NVIC_InitStructure);  //初始化NVIC寄存器
+
+TIM_Cmd(TIM4, ENABLE);  //使能TIMx</span>
+</code></pre><p>此设置的目的为提供一个周期为1ms的中断。</p>
+<p>由上面的设置我们不难看出APB1总线的频率为72M。</p>
+<p>这里我设置的分频数为72，则计数器的频率为1M。</p>
+<p>Period本质上是设置的比较器的值，设置位1000后，1M/1000 = 1000Hz</p>
+<p>得到了1ms的周期。</p>
 
       
     </div>
@@ -238,18 +270,9 @@ ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于�
     
 <nav id="article-nav">
   
-    <a href="/2015/05/08/小宇/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          小宇
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/05/02/我要去哪里/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">我要去哪里</div>
+    <a href="/2015/06/22/当邋遢家伙的耳机真实受罪/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">当邋遢家伙的耳机真是受罪</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -278,7 +301,7 @@ ARM Cortex™-M处理器系列是一系列可向上兼容的高能效、易于�
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="arm单片机起步" data-title="arm单片机起步" data-url="http://yoursite.com/2015/05/08/arm单片机起步/"></div>
+	<div class="ds-thread" data-thread-key="arm单片机起步（二）" data-title="arm单片机起步（二）" data-url="http://yoursite.com/2015/07/18/arm单片机起步（二）/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
