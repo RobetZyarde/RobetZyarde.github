@@ -166,6 +166,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-complex" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/13/complex/" class="article-date">
+  	<time datetime="2016-03-13T11:03:03.000Z" itemprop="datePublished">2016-03-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/13/complex/">complex</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个多月了，<br>课程多的出乎意料，<br>学习语言，从开头的迷茫，到现在的疲惫，<br>心中的想法复杂得毫无头绪。  </p>
+<p>我想找你好好聊聊，又怕被拒绝，<br>我已经无法接受低一级的关系，<br>就算不被拒绝，我能聊些什么呢？<br>有时看到你们聊的很开心，其实我没什么不高兴的，<br>也许听听就好了，能静静的倾听你和谁闲聊，何尝不是很好的放松。<br>或者就是静静的看着，什么也不想。<br>是啊，我可以和你聊这些愚蠢的想法，<br>多的毫无休止的蠢想法。  </p>
+<p>辗转反侧，<br>不知所措，<br>明明是一个简单的判断题，<br>我问你，就会有答案。<br>期盼着，<br>疑虑着，<br>克服本能，睁大眼睛去看，<br>那微乎其微的变化，<br>征兆？假象？<br>过往的痛苦经历，挫败感，耻辱感，<br>相似的感受，强烈的欲望。</p>
+<p>COMPLEXITY</p>
+<p>简单的问题，变得复杂。<br>而我还当局者迷。<br>问自己，到底要什么？能付出多少？  </p>
+<p>爱是怀疑。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-向左走，向右走" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -766,99 +824,6 @@
     
     <div class="article-info article-info-index">
       
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-arm单片机起步（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/18/arm单片机起步（二）/" class="article-date">
-  	<time datetime="2015-07-18T11:04:13.000Z" itemprop="datePublished">2015-07-18</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/18/arm单片机起步（二）/">arm单片机起步（二）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="时钟与定时器">时钟与定时器</h1><p>ARM的时钟与其相关的总线比C51复杂了很多。</p>
-<p>在使用库函数的时候，有专门的函数用来初始化。</p>
-<p>通过使用相应的函数，可以减少对其相关寄存器的详细了解。</p>
-<p><img src="http://7xivoo.com1.z0.glb.clouddn.com/QQ截图20150809173604.png" alt=""></p>
-<p>从此图可以看出，每个具体外设的时钟总线是固定的，在设置时可以查阅相应的文档。</p>
-<h2 id="系统时钟的初始化">系统时钟的初始化</h2><p>在system_stm32f10x.c文件中有设计时钟的宏定义，最终在SystemInit()中被调用。</p>
-<p>一般情况下是不用修改推荐的定义值的。</p>
-<p>文件开头就有一个这样的定义:</p>
-<pre><code><span class="comment">//#define SYSCLK_FREQ_HSE    HSE_Value</span>
-<span class="comment">//#define SYSCLK_FREQ_20MHz 20000000</span>
-<span class="comment">//#define SYSCLK_FREQ_36MHz 36000000</span>
-<span class="comment">//#define SYSCLK_FREQ_48MHz 48000000</span>
-<span class="comment">//#define SYSCLK_FREQ_56MHz 56000000</span>
-  <span class="hexcolor">#def</span>ine SYSCLK_FREQ_72MHz <span class="number">72000000</span>
-</code></pre><p>通过 #define 和 #elif defined 的组合使用，让用户从软件上自由选择系统时钟，</p>
-<p>而厂家提供推荐的各个总线下的时钟分频频率（见c文件中相关定义）</p>
-<h2 id="定时器时钟的初始化">定时器时钟的初始化</h2><p>以定时器举例<br>        TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;<br>        NVIC_InitTypeDef NVIC_InitStructure;</p>
-<pre><code><span class="constant">RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE); //时钟使能
-
-//定时器TIM3初始化
-TIM_TimeBaseStructure.TIM_Period</span> = <span class="number">1000</span>-<span class="number">1</span>; <span class="comment">//设置在下一个更新事件装入活动的自动重装载寄存器周期的值</span>
-<span class="constant">TIM_TimeBaseStructure.TIM_Prescaler</span> = <span class="number">72</span>-<span class="number">1</span>; <span class="comment">//设置用来作为TIMx时钟频率除数的预分频值</span>
-<span class="constant">TIM_TimeBaseStructure.TIM_ClockDivision</span> = <span class="number">0</span>;
-<span class="constant">TIM_TimeBaseStructure.TIM_CounterMode</span> = TIM_CounterMode_Up;  <span class="comment">//TIM向上计数模式</span>
-<span class="constant">TIM_TimeBaseInit(TIM4, &amp;TIM_TimeBaseStructure); //根据指定的参数初始化TIMx的时间基数单位
-
-TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE ); //使能指定的TIM3中断,允许更新中断
-
-//中断优先级NVIC设置
-NVIC_InitStructure.NVIC_IRQChannel</span> = TIM4_IRQn;  <span class="comment">//TIM3中断</span>
-<span class="constant">NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority</span> = <span class="number">2</span>;  <span class="comment">//先占优先级0级</span>
-<span class="constant">NVIC_InitStructure.NVIC_IRQChannelSubPriority</span> = <span class="number">3</span>;  <span class="comment">//从优先级3级</span>
-<span class="constant">NVIC_InitStructure.NVIC_IRQChannelCmd</span> = ENABLE; <span class="comment">//IRQ通道被使能</span>
-<span class="constant">NVIC_Init(&amp;NVIC_InitStructure);  //初始化NVIC寄存器
-
-TIM_Cmd(TIM4, ENABLE);  //使能TIMx</span>
-</code></pre><p>此设置的目的为提供一个周期为1ms的中断。</p>
-<p>由上面的设置我们不难看出APB1总线的频率为72M。</p>
-<p>这里我设置的分频数为72，则计数器的频率为1M。</p>
-<p>Period本质上是设置的比较器的值，设置位1000后，1M/1000 = 1000Hz</p>
-<p>得到了1ms的周期。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ARM-学习/">ARM 学习</a></li></ul>
-	</div>
-
       
 
       
